@@ -43,7 +43,7 @@ int main(){
     int w=io_read(AM_GPU_CONFIG).width;
     int h=io_read(AM_GPU_CONFIG).height;
     //原图尺寸，输出尺寸
-    pic_draw(640,640,w,h);
+    pic_draw(pic_width,pic_height,w,h);
     io_write(AM_GPU_FBDRAW,0,0,res_pic_data,w,h,true);
 
     //监听 若输入ESC则停机
