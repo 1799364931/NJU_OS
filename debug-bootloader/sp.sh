@@ -48,7 +48,7 @@ int pic_width = $WIDTH;
 int pic_height = $HEIGHT;
 EOL
 
-make run
+make -j4 run
 
-echo "图片已转换为二进制文件，并存储为image_hex.txt"
+
 

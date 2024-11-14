@@ -191,13 +191,20 @@ static void gpu_fbdraw(AM_GPU_FBDRAW_T *draw) {
   int x = draw->x, y = draw->y, w = draw->w, h = draw->h;
   int W = display.w, H = display.h;
   uint32_t *pixels = draw->pixels;
+  //更改一下
+  //char *pixels_1= draw->pixels;
   int len = (x + w >= W) ? W - x : w;
-  for (int j = 0; j < h; j ++, pixels += w) {
+  //高度
+  for (int j = 0; j < h; j ++, pixels +=w) {
+    //printf("w:%d\n",pixels_1);
+    //printf("%d\n",pixels);
     if (y + j < H) {
       struct pixel *px = &fb[x + (j + y) * W];
       for (int i = 0; i < len; i ++, px ++) {
-        uint32_t p = pixels[i];
+        uint32_t p=pixels[i];
+        // /*px = (struct pixel) {.r = (*p),.g= (*(p+1)),.b=(*(p+2))};
         *px = (struct pixel) { .r = R(p), .g = G(p), .b = B(p) };
+       // printf("r:%x g:%x b:%x num:%x\n",px->r,px->g,px->b,p);
       }
     }
   }

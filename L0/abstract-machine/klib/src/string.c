@@ -5,72 +5,65 @@
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
 size_t strlen(const char *s) {
-  char* p=s;
-  while((*p)!='\0'){
-    p++;
+  const char* t=s;
+  while((*s)!='\0'){
+    s++;
   }
-  return (size_t)(p-s);
+  return (size_t)(s-t);
 }
 
 char *strcpy(char *dst, const char *src) {
-  char* p=src;
-  while((*p)!='\0'){
-    *dst=*p;
+  while((*src)!='\0'){
+    *dst=*src;
     dst++;
-    p++;
+    src++;
   }
   return dst;
 }
 
 char *strncpy(char *dst, const char *src, size_t n) {
-  char* p=src;
-  while((*p)!='\0' && (size_t)(p-src)<n){
-    *dst=*p;
+  while((*src)!='\0' && n-- ){
+    *dst=*src;
     dst++;
-    p++;
+    src++;
   }
-  return dst;
+  return dst-n;
 }
 
 char *strcat(char *dst, const char *src) {
   char* p1=dst+strlen(dst);
-  char* p2=src;
-  while((*p2!='\0')){
-    *p1=*p2;
+  while((*src!='\0')){
+    *p1=*src;
     p1++;
-    p2++;
+    src++;
   }
   return dst;
 }
 
 int strcmp(const char *s1, const char *s2) {
-  char* p1=s1;
-  char* p2=s2;
-  while(*p2!='\0'&& *p1!='\0'){
-    if(*p1 < *p2){
+  while(*s2!='\0'&& *s1!='\0'){
+    if(*s1 < *s2){
       return -1; 
     }
-    if(*p1 > *p2){
+    if(*s1 > *s2){
       return 1;
     }
-    p1++;
-    p2++;
+    s1++;
+    s2++;
   }
   return 0;
 }
 
 int strncmp(const char *s1, const char *s2, size_t n) {
-  char* p1=s1;
-  char* p2=s2;
-  while(n-- && *p2!='\0'&& *p1!='\0'){
-    if(*p1 < *p2){
+  while(n-- && *s2!='\0'&& *s1!='\0'){
+    if(*s1 < *s2){
       return -1; 
     }
-    if(*p1 > *p2){
+    if(*s1 > *s2){
       return 1;
     }
-    p1++;
-    p2++;
+    s1++;
+    s2++;
   }
   return 0;
 }
@@ -81,6 +74,7 @@ void *memset(void *s, int c, size_t n) {
   for(size_t i=0;i<n;p++,i++){
     *p=full;
   }
+  return s;
 }
 
 void *memmove(void *dst, const void *src, size_t n) {
