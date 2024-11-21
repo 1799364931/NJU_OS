@@ -60,8 +60,8 @@ static inline void
 stack_switch_call(void *sp, void *entry, __uint64_t arg) {
     asm volatile (
 #if __x86_64__
-        "movq %0, %rsp"
-        "movq %2, %rdi"
+        "movq %0, %%rsp"
+        "movq %2, %%rdi"
         "jmp *%1"
           :
           : "b"((__uint64_t)sp),
@@ -95,7 +95,7 @@ void co_yield() {
         else if(next_co->status==CO_NEW){
             void *sp;
             asm volatile(
-                "movq %rsp,%0"
+                "movq %%rsp,%0"
                 :"=r"(sp)
             );
             stack_switch_call(sp,next_co->func,&next_co->arg);
