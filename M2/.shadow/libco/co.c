@@ -60,8 +60,8 @@ static inline void
 stack_switch_call(void *sp, void *entry, __uint64_t arg) {
     asm volatile (
 #if __x86_64__
-        "movq %0, %%rsp"
-        "movq %2, %%rdi"
+        "movq %0, %rsp"
+        "movq %2, %rdi"
         "jmp *%1"
           :
           : "b"((__uint64_t)sp),
