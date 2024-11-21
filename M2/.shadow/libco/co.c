@@ -98,7 +98,7 @@ void co_yield() {
                 "movq %rsp,%0"
                 :"b"(sp)
             );
-            stack_switch_call(sp,next_co->func,next_co->arg);
+            stack_switch_call(sp,next_co->func,&next_co->arg);
         }
         else if(next_co->status==CO_WAITING){
 
