@@ -37,7 +37,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     struct co* new_co=malloc(sizeof(struct co));
     new_co->func=func;
     new_co->name=malloc(sizeof(char)*strlen(name));
-    strcpy(new_co,name);
+    strcpy(new_co->name,name);
     new_co->arg=arg;
     new_co->status=CO_NEW;
     co_list[length_co_list++]=new_co;
