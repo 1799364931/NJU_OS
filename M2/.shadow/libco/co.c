@@ -95,8 +95,8 @@ void co_yield() {
         else if(next_co->status==CO_NEW){
             void *sp;
             asm volatile(
-                "movq %%rsp,%0"
-                :"=r"(sp)
+                "movq %%rsp,*%0"
+                :"=m"(sp)
             );
             stack_switch_call(sp,next_co->func,(__uint64_t)next_co->arg);
         }
