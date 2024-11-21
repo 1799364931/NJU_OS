@@ -29,19 +29,20 @@ void unlock(){
 }
 
 void T_sum(){
-    lock();
+    //lock();
     cout<<"进来了"<<endl;
     for(int i=0;i<N;i++){
         sum++;
       //  cout<<sum<<"\n";
     }
-    unlock();
+    //unlock();
 }
 
 int main(){
     thread t1(T_sum);
+    t1.join();
     thread t2(T_sum);
-    t1.join();t2.join();
+    t2.join();
     cout<<sum<<endl;
 }
 
