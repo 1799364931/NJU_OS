@@ -1,7 +1,7 @@
 #include "co.h"
 #include <stdlib.h>
 #include <setjmp.h>
-#include<random.h>
+#include <stdlib.h>
 #define MAX_LENGTH 100
 struct context{
     //registers
