@@ -15,6 +15,7 @@ static int get_count() {
 }
 
 static void work_loop(void *arg) {
+     printf("\n--test---\n");
     const char *s = (const char*)arg;
    
     for (int i = 0; i < 100; ++i) {
@@ -27,7 +28,7 @@ static void work_loop(void *arg) {
 }
 
 static void work(void *arg) {
-     printf("\n--test---\n");
+    
     work_loop(arg);
 }
 
