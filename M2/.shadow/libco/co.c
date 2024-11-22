@@ -65,7 +65,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
         "movq %2,%%rdi\n\t"
         "jmp *%1\n\t"
           :
-          : "r"((__uint32_t)sp),
+          : "r"(sp),
             "r"(entry),
             "r"(arg)
           : "memory"
