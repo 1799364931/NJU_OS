@@ -4,7 +4,7 @@
 #include <setjmp.h>
 #include <stdlib.h>
 #define MAX_LENGTH 100
-#define STACK_SIZE 2024
+#define STACK_SIZE 1024*1024
 
 enum co_status {
     CO_NEW = 1, // 新创建，还未执行过
@@ -96,11 +96,11 @@ void co_yield() {
     int val=setjmp(current_co->context);
     if(val==0){
         //保存现场的
-
-        
         //随机选择一个切换
         struct co* next_co=co_list[rand()%length_co_list];
+        current_co=next_co;
         if(next_co->status==CO_RUNNING){
+            
             longjmp(next_co->context,0);
         }
         else if(next_co->status==CO_NEW){
