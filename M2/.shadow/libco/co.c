@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #define MAX_LENGTH 100
-#define STACK_SIZE 8192
+#define STACK_SIZE 4096
 
 enum co_status {
     CO_NEW = 1, // 新创建，还未执行过
@@ -54,7 +54,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     co_list[length_co_list++]=new_co;
     
     co_yield();
-     printf("huilai!!\n");
+     //printf("huilai!!\n");
     return new_co;
 }
 
