@@ -101,8 +101,8 @@ void co_yield() {
     if(val==0){
         //保存现场的
         //随机选择一个切换
-        
-        struct co* next_co=co_list[rand()%(length_co_list)];
+        int randval=rand()%(length_co_list);
+        struct co* next_co=co_list[randval];
         
         current_co=next_co;
         
