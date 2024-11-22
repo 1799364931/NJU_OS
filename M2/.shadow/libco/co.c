@@ -87,7 +87,7 @@ stack_switch_call( void *entry, void* arg) {
         "movl %2, 4(%0)\n\t"
         "jmp *%1\n\t"
           :
-          : "b"((__uint32_t)sp - 8),
+          : //"b"((__uint32_t)sp - 8),
             "d"(entry),
             "a"(arg)
           : "memory"
