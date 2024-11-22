@@ -101,13 +101,13 @@ void co_yield() {
     if(val==0){
         //保存现场的
         //随机选择一个切换
-        printf("%s\n",current_co->name);
+        //printf("%s\n",current_co->name);
         struct co* next_co=co_list[rand()%(length_co_list)];
         
         current_co=next_co;
         
         if(next_co->status==CO_RUNNING){
-            printf("\n hehe \n");
+            //printf("\n hehe \n");
             longjmp(next_co->context,1);
         }
         else if(next_co->status==CO_NEW){
