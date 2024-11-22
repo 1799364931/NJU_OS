@@ -44,6 +44,7 @@ __attribute__((constructor)) void co_init(){
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
+    printf("新建!\n");
     struct co* new_co=malloc(sizeof(struct co));
     new_co->func=func;
     new_co->name=malloc(sizeof(char)*(strlen(name)+1));
