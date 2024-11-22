@@ -4,10 +4,7 @@
 #include <setjmp.h>
 #include <stdlib.h>
 #define MAX_LENGTH 100
-struct context{
-    //registers
-    
-};
+#define STACK_SIZE 2024
 
 enum co_status {
     CO_NEW = 1, // 新创建，还未执行过
@@ -22,9 +19,9 @@ struct co {
     void *arg;
 
     enum co_status status;  // 协程的状态
-    struct co *    waiter;  // 是否有其他协程在等待当前协程
-    jmp_buf context; // 寄存器现场
-    //uint8_t        stack[STACK_SIZE]; // 协程的堆栈
+    struct co * waiter;  // 是否有其他协程在等待当前协程
+    jmp_buf     context; // 寄存器现场
+    __uint8_t   stack[STACK_SIZE]; // 协程的堆栈
 
 };
 
@@ -58,23 +55,23 @@ void co_wait(struct co *co) {
 
 
 static inline void
-stack_switch_call(/*void *sp,*/ void *entry, void* arg) {
+stack_switch_call(void *sp, void *entry, void* arg) {
     asm volatile (
 #if __x86_64__
-       // "movq %0,%%rsp\n\t"
+        "movq %0,%%rsp\n\t"
         "movq %2,%%rdi\n\t"
         "jmp *%1\n\t"
           :
-          : //"r"(sp),
+          : "r"(sp),
             "r"(entry),
             "r"(arg)
           : "memory"
 #else
-   //     "movl %0, %%esp\n\t"
+        "movl %0, %%esp\n\t"
         "movl %2, 4(%0)\n\t"
         "jmp *%1\n\t"
           :
-          : //"b"((__uint32_t)sp - 8),
+          : "b"((__uint32_t)sp - 8),
             "d"(entry),
             "a"(arg)
           : "memory"
@@ -94,12 +91,7 @@ void co_yield() {
             longjmp(next_co->context,0);
         }
         else if(next_co->status==CO_NEW){
-            void *sp;
-            asm volatile(
-                "movq %%rsp,%0"
-                :"=r"(sp)
-            );
-            stack_switch_call(next_co->func,next_co->arg);
+            stack_switch_call((void*)(current_co->stack),next_co->func,next_co->arg);
         }
         else if(next_co->status==CO_WAITING){
             
