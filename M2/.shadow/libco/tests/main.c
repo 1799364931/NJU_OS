@@ -22,7 +22,7 @@ static void work_loop(void *arg) {
         //printf("%s%d  ", s, get_count());
         
         add_count();
-        co_yield();
+        //co_yield();
     }
 }
 
@@ -122,7 +122,7 @@ static void test_2() {
 
 int main() {
     setbuf(stdout, NULL);
-      putchar('!');
+      
     printf("Test #1. Expect: (X|Y){0, 1, 2, ..., 199}\n");
     test_1();
 
