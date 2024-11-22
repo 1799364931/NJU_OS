@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #define MAX_LENGTH 100
-#define STACK_SIZE 1024*128
+#define STACK_SIZE 1024*1024
 
 enum co_status {
     CO_NEW = 1, // 新创建，还未执行过
