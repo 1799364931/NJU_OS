@@ -51,9 +51,9 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     new_co->arg=arg;
     new_co->status=CO_NEW;
     co_list[length_co_list++]=new_co;
-    
-    co_yield();
     printf("%s\n",current_co->name);
+    co_yield();
+    
     return new_co;
 }
 
