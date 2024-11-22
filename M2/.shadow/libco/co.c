@@ -4,7 +4,7 @@
 #include <setjmp.h>
 #include <stdlib.h>
 #define MAX_LENGTH 100
-#define STACK_SIZE 1024*1024
+#define STACK_SIZE 2024*2024
 
 enum co_status {
     CO_NEW = 1, // 新创建，还未执行过
