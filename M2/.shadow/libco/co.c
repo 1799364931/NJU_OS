@@ -91,6 +91,7 @@ stack_switch_call( void *entry, void* arg) {
         //     "d"(entry),
         //     "a"(arg)
         //   : "memory"
+        "nop"
 #endif
     );
 }
