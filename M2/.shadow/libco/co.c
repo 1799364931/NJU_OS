@@ -30,6 +30,11 @@ struct co* current_co;
 struct co* co_list[MAX_LENGTH];
 int length_co_list=0;
 
+
+__attribute__((constructor)) struct co *co_init(){
+    current_co=co_start("main",(void(*)(int))0x08000000,NULL);
+}
+
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     struct co* new_co=malloc(sizeof(struct co));
     new_co->func=func;
