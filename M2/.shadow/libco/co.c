@@ -35,7 +35,7 @@ __attribute__((constructor)) void co_init(){
     current_co=malloc(sizeof(struct co));
     current_co->func=(void*)(0x80000000);
     current_co->name=malloc(sizeof(char)*5);
-    strcpy(current_co->name,"main");
+    strncpy(current_co->name,"main",4);
     current_co->arg=NULL;
     current_co->status=CO_RUNNING;
     co_list[length_co_list++]=current_co;
@@ -45,7 +45,7 @@ __attribute__((constructor)) void co_init(){
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     struct co* new_co=malloc(sizeof(struct co));
     new_co->func=func;
-    new_co->name=malloc(sizeof(char)*strlen(name));
+    new_co->name=malloc(sizeof(char)*(strlen(name)+1));
     strcpy(new_co->name,name);
     new_co->arg=arg;
     new_co->status=CO_NEW;
