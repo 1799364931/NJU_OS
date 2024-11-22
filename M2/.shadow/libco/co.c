@@ -44,7 +44,8 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     new_co->status=CO_NEW;
     co_list[length_co_list++]=new_co;
     //co_yield();
-    return NULL;
+
+    return new_co;
 }
 
 void co_wait(struct co *co) {
@@ -97,7 +98,9 @@ void co_yield() {
             longjmp(next_co->context,0);
         }
         else if(next_co->status==CO_NEW){
+            next_co->status=CO_RUNNING;
             stack_switch_call((void*)(current_co->stack),next_co->func,next_co->arg);
+            
         }
         else if(next_co->status==CO_WAITING){
             
