@@ -16,9 +16,8 @@ static int get_count() {
 
 static void work_loop(void *arg) {
     const char *s = (const char*)arg;
-   
+    putchar('\n');
     for (int i = 0; i < 100; ++i) {
-        putchar('\n');
        // printf("\n--test---\n");
         //printf("%s%d  ", s, get_count());
         
