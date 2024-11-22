@@ -96,7 +96,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 }
 
 void co_yield() {
-     printf("next:\n");
+    printf("next:\n");
     int val=setjmp(current_co->context);
     
     if(val==0){
@@ -107,7 +107,7 @@ void co_yield() {
        
         current_co=next_co;
         if(next_co->status==CO_RUNNING){
-            longjmp(next_co->context,1);
+            longjmp(next_co->context,-1);
         }
         else if(next_co->status==CO_NEW){
             next_co->status=CO_RUNNING;
