@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #define MAX_LENGTH 100
-#define STACK_SIZE 1024*1024
+#define STACK_SIZE 1024
 
 enum co_status {
     CO_NEW = 1, // 新创建，还未执行过
@@ -109,7 +109,7 @@ void co_yield() {
         }
         else if(next_co->status==CO_NEW){
             next_co->status=CO_RUNNING;
-            stack_switch_call((void*)(next_co->stack + STACK_SIZE),next_co->func,next_co->arg);
+            stack_switch_call((void*)(next_co->stack),next_co->func,next_co->arg);
             
         }
         else if(next_co->status==CO_WAITING){
