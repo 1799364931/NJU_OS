@@ -25,12 +25,12 @@ static void work_loop(void *arg) {
 }
 
 static void work(void *arg) {
- 
+    printf("\n--test---\n");
     work_loop(arg);
 }
 
 static void test_1() {
-       printf("test");
+       
     struct co *thd1 = co_start("thread-1", work, "X");
     struct co *thd2 = co_start("thread-2", work, "Y");
 
