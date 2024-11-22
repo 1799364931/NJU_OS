@@ -97,7 +97,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 
 void co_yield() {
     int val=setjmp(current_co->context);
-      
+    printf("%d\n",val);
     if(val==0){
         //保存现场的
         //随机选择一个切换
