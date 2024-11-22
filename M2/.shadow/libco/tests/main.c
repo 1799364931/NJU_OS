@@ -25,7 +25,7 @@ static void work_loop(void *arg) {
 }
 
 static void work(void *arg) {
-    printf("test");
+ 
     work_loop(arg);
 }
 
@@ -121,7 +121,7 @@ static void test_2() {
 
 int main() {
     setbuf(stdout, NULL);
-
+       printf("test");
     printf("Test #1. Expect: (X|Y){0, 1, 2, ..., 199}\n");
     test_1();
 
