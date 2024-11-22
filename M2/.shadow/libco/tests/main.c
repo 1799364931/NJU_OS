@@ -19,8 +19,8 @@ static void work_loop(void *arg) {
    
     for (int i = 0; i < 100; ++i) {
         
-        printf("%s%d  ", s, get_count());
-         //printf("\n--test---\n");
+        //printf("%s%d  ", s, get_count());
+         printf("\n--test---\n");
         add_count();
         co_yield();
     }
