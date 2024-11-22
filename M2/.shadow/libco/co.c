@@ -58,7 +58,7 @@ void co_wait(struct co *co) {
 
 
 static inline void
-stack_switch_call(void *sp, void *entry, __uint32_t arg) {
+stack_switch_call(void *sp, void *entry, void* arg) {
     asm volatile (
 #if __x86_64__
         "movq %0,%%rsp\n\t"
@@ -99,7 +99,7 @@ void co_yield() {
                 "movq %%rsp,%0"
                 :"=r"(sp)
             );
-            stack_switch_call(sp,next_co->func,(__uint32_t)next_co->arg);
+            stack_switch_call(sp,next_co->func,next_co->arg);
         }
         else if(next_co->status==CO_WAITING){
             
