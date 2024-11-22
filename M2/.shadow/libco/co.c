@@ -13,7 +13,7 @@ enum co_status {
     CO_WAITING, // 在 co_wait 上等待
     CO_DEAD,    // 已经结束，但还未释放资源
 };
-
+//export LD_LIBRARY_PATH=/root/NJUOS/M2/libco
 struct co {
     char *name;
     void (*func)(void *); // co_start 指定的入口地址和参数
@@ -110,12 +110,12 @@ void co_yield() {
         
         current_co=next_co;
         
-        if(next_co->status==CO_RUNNING){
+        if(next_co->status==CO_RUNNING || next_co->status==CO_WAITING){
             
            // printf("\n hehe \n");
             longjmp(next_co->context,1);
         }
-        else if(next_co->status==CO_NEW || next_co->status==CO_WAITING){
+        else if(next_co->status==CO_NEW ){
             next_co->status=CO_RUNNING;
             stack_switch_call((void*)(next_co->stack + STACK_SIZE),next_co->func,next_co->arg);
             
