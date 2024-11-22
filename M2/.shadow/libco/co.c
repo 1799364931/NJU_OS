@@ -50,6 +50,7 @@ void co_wait(struct co *co) {
     co->waiter=co;
     while(co->status!=CO_DEAD) // 如果进程co没结束，就一直等待
 
+    length_co_list--;
     free(co);
     co=NULL;
     return;
@@ -95,13 +96,13 @@ void co_yield() {
         else if(next_co->status==CO_NEW){
             void *sp;
             asm volatile(
-                "movq %%rsp,*%0"
-                :"=m"(sp)
+                "movq %%rsp,%0"
+                :"=r"(sp)
             );
             stack_switch_call(sp,next_co->func,(__uint64_t)next_co->arg);
         }
         else if(next_co->status==CO_WAITING){
-
+            
         }
         //DEAD
         else{
