@@ -96,12 +96,13 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 }
 
 void co_yield() {
+     printf("next:\n");
     int val=setjmp(current_co->context);
     
     if(val==0){
         //保存现场的
         //随机选择一个切换
-         printf("next:");
+        
         struct co* next_co=co_list[rand()%length_co_list];
        
         current_co=next_co;
