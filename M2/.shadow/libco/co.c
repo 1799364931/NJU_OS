@@ -22,7 +22,7 @@ struct co {
     enum co_status status;  // 协程的状态
     struct co * waiter;  // 是否有其他协程在等待当前协程
     jmp_buf     context; // 寄存器现场
-    //__uint8_t   stack[STACK_SIZE]; // 协程的堆栈
+    __uint8_t   stack[STACK_SIZE]; // 协程的堆栈
 
 };
 
@@ -70,28 +70,27 @@ void co_wait(struct co *co) {
 }
 
 
-static inline void//void *sp,
-stack_switch_call( void *entry, void* arg) {
+static inline void
+stack_switch_call(void *sp, void *entry, void* arg) {
     asm volatile (
 #if __x86_64__
-        //"movq %0,%%rsp\n\t"
-        "movq %1,%%rdi\n\t"
-        "jmp *%0\n\t"
+        "movq %0,%%rsp\n\t"
+        "movq %2,%%rdi\n\t"
+        "jmp *%1\n\t"
           :
-          : //"r"(sp),
+          : "r"(sp),
             "r"(entry),
             "r"(arg)
           : "memory"
 #else
-        // "movl %0, %%esp\n\t"
-        // "movl %2, 4(%0)\n\t"
-        // "jmp *%1\n\t"
-        //   :
-        //   : //"b"((__uint32_t)sp - 8),
-        //     "d"(entry),
-        //     "a"(arg)
-        //   : "memory"
-        "nop"
+        "movl %0, %%esp\n\t"
+        "movl %2, 4(%0)\n\t"
+        "jmp *%1\n\t"
+          :
+          : "b"((__uint32_t)sp - 8),
+            "d"(entry),
+            "a"(arg)
+          : "memory"
 #endif
     );
 }
@@ -110,7 +109,7 @@ void co_yield() {
         }
         else if(next_co->status==CO_NEW){
             next_co->status=CO_RUNNING;
-            stack_switch_call(next_co->func,next_co->arg);//(void*)(next_co->stack),
+            stack_switch_call((void*)(next_co->stack),next_co->func,next_co->arg);
             
         }
         else if(next_co->status==CO_WAITING){
