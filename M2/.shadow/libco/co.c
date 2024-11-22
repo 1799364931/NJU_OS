@@ -31,7 +31,7 @@ struct co* co_list[MAX_LENGTH];
 int length_co_list=0;
 
 
-__attribute__((constructor)) struct co *co_init(){
+__attribute__((constructor)) void co_init(){
     current_co=co_start("main",(void(*))0x08000000,NULL);
 }
 
