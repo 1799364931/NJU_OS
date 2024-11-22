@@ -19,7 +19,7 @@ static void work_loop(void *arg) {
     
     for (int i = 0; i < 100; ++i) {
         //printf("--test---\n");
-        printf("%s  ", s);//, get_count()
+        printf("%d  ", get_count());
        
         add_count();
       
