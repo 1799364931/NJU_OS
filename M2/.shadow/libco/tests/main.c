@@ -30,7 +30,7 @@ static void work(void *arg) {
 }
 
 static void test_1() {
-
+       printf("test");
     struct co *thd1 = co_start("thread-1", work, "X");
     struct co *thd2 = co_start("thread-2", work, "Y");
 
@@ -121,7 +121,7 @@ static void test_2() {
 
 int main() {
     setbuf(stdout, NULL);
-       printf("test");
+      
     printf("Test #1. Expect: (X|Y){0, 1, 2, ..., 199}\n");
     test_1();
 
