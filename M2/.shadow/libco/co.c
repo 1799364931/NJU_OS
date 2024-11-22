@@ -96,7 +96,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 }
 
 void co_yield() {
-    printf("next:\n");
+    printf("next:%s\n",current_co->name);
     int val=setjmp(current_co->context);
     
     if(val==0){
