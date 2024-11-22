@@ -62,22 +62,22 @@ stack_switch_call(/*void *sp,*/ void *entry, void* arg) {
     asm volatile (
 #if __x86_64__
        // "movq %0,%%rsp\n\t"
-        "movq %1,%%rdi\n\t"
-        "jmp *%0\n\t"
+        "movq %2,%%rdi\n\t"
+        "jmp *%1\n\t"
           :
           : //"r"(sp),
             "r"(entry),
             "r"(arg)
           : "memory"
 #else
-   /*     "movl %0, %%esp\n\t"
+   //     "movl %0, %%esp\n\t"
         "movl %2, 4(%0)\n\t"
         "jmp *%1\n\t"
           :
-          : "b"((__uint32_t)sp - 8),
+          : //"b"((__uint32_t)sp - 8),
             "d"(entry),
             "a"(arg)
-          : "memory" */
+          : "memory"
 #endif
     );
 }
