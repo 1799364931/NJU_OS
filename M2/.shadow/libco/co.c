@@ -33,7 +33,7 @@ int length_co_list=0;
 
 __attribute__((constructor)) void co_init(){
     current_co=malloc(sizeof(struct co));
-    current_co->func=(void*)(0x80000000);
+    current_co->func=(void*)(0x12345678);
     current_co->name=malloc(sizeof(char)*5);
     strncpy(current_co->name,"main",5);
     current_co->arg=NULL;
@@ -98,10 +98,9 @@ void co_yield() {
         //保存现场的
         //随机选择一个切换
         struct co* next_co=co_list[rand()%length_co_list];
-        //current_co=next_co;
+        current_co=next_co;
         if(next_co->status==CO_RUNNING){
-            
-            longjmp(next_co->context,0);
+            longjmp(next_co->context,1);
         }
         else if(next_co->status==CO_NEW){
             next_co->status=CO_RUNNING;
