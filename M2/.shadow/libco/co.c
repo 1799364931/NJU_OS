@@ -113,14 +113,14 @@ void co_yield() {
            // printf("\n hehe \n");
             longjmp(next_co->context,1);
         }
-        else if(next_co->status==CO_NEW){
+        else if(next_co->status==CO_NEW || next_co->status==CO_WAITING){
             next_co->status=CO_RUNNING;
             stack_switch_call((void*)(next_co->stack + STACK_SIZE),next_co->func,next_co->arg);
             
         }
-        else if(next_co->status==CO_WAITING){
+       // else if(next_co->status==CO_WAITING){
             
-        }
+       // }
         //DEAD
         else{
             return;
