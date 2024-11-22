@@ -32,7 +32,7 @@ int length_co_list=0;
 
 
 __attribute__((constructor)) struct co *co_init(){
-    current_co=co_start("main",(void(*)(int))0x08000000,NULL);
+    current_co=co_start("main",(void(*))0x08000000,NULL);
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
