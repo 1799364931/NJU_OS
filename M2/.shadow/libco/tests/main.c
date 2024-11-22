@@ -16,7 +16,7 @@ static int get_count() {
 
 static void work_loop(void *arg) {
     const char *s = (const char*)arg;
-    putchar('!');
+    
     for (int i = 0; i < 100; ++i) {
        // printf("\n--test---\n");
         //printf("%s%d  ", s, get_count());
@@ -125,7 +125,7 @@ int main() {
       
     printf("Test #1. Expect: (X|Y){0, 1, 2, ..., 199}\n");
     test_1();
-
+putchar('!');
     printf("\n\nTest #2. Expect: (libco-){200, 201, 202, ..., 399}\n");
     test_2();
 
