@@ -107,7 +107,7 @@ void co_yield() {
         current_co=next_co;
         
         if(next_co->status==CO_RUNNING){
-            printf("%s\n",current_co->name);
+            printf("hehe %s\n",current_co->name);
             printf("\n hehe \n");
             longjmp(next_co->context,1);
         }
