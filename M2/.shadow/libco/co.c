@@ -50,7 +50,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     new_co->arg=arg;
     new_co->status=CO_NEW;
     co_list[length_co_list++]=new_co;
-    //co_yield();
+    co_yield();
     return new_co;
 }
 
@@ -94,6 +94,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 
 void co_yield() {
     int val=setjmp(current_co->context);
+    printf("%s\n",current_co->name);
     if(val==0){
         //保存现场的
         //随机选择一个切换
