@@ -73,7 +73,7 @@ void co_wait(struct co *co) {
 static inline void//void *sp,
 stack_switch_call( void *entry, void* arg) {
     asm volatile (
-//#if __x86_64__
+#if __x86_64__
         //"movq %0,%%rsp\n\t"
         "movq %1,%%rdi\n\t"
         "jmp *%0\n\t"
@@ -82,7 +82,7 @@ stack_switch_call( void *entry, void* arg) {
             "r"(entry),
             "r"(arg)
           : "memory"
-//#else
+#else
         // "movl %0, %%esp\n\t"
         // "movl %2, 4(%0)\n\t"
         // "jmp *%1\n\t"
@@ -91,7 +91,7 @@ stack_switch_call( void *entry, void* arg) {
         //     "d"(entry),
         //     "a"(arg)
         //   : "memory"
-//#endif
+#endif
     );
 }
 
