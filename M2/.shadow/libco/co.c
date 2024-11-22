@@ -37,7 +37,7 @@ __attribute__((constructor)) void co_init(){
     current_co->name=malloc(sizeof(char)*5);
     strcpy(current_co->name,"main");
     current_co->arg=NULL;
-    current_co->status=CO_NEW;
+    current_co->status=CO_RUNNING;
     co_list[length_co_list++]=current_co;
     
 }
