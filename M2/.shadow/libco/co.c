@@ -53,7 +53,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     co_list[length_co_list++]=new_co;
     
     co_yield();
-   printf("%s\n",current_co->name);
+    printf("%s\n",current_co->name);
     return new_co;
 }
 
@@ -107,7 +107,7 @@ void co_yield() {
         current_co=next_co;
         
         if(next_co->status==CO_RUNNING){
-            longjmp(next_co->context,-1);
+            longjmp(next_co->context,1);
         }
         else if(next_co->status==CO_NEW){
             next_co->status=CO_RUNNING;
