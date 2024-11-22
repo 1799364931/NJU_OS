@@ -70,9 +70,9 @@ stack_switch_call(void *sp, void *entry, void* arg) {
             "r"(arg)
           : "memory"
 #else
-        "movl %0, %%esp"
-        "movl %2, 4(%0)"
-        "jmp *%1"
+        "movl %0, %%es\n\tp"
+        "movl %2, 4(%0)\n\t"
+        "jmp *%1\n\t"
           :
           : "b"((__uint32_t)sp - 8),
             "d"(entry),
