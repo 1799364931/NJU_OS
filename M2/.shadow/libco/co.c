@@ -35,7 +35,13 @@ int length_co_list=0;
 
 
 __attribute__((constructor)) void co_init(){
-    co_start("main",NULL,NULL);
+    current_co=malloc(sizeof(struct co));
+    current_co->func=NULL;
+    current_co->name=malloc(sizeof(char)*5);
+    strncpy(current_co->name,"main",5);
+    current_co->arg=NULL;
+    current_co->status=CO_RUNNING;
+    co_list[length_co_list++]=current_co;
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
