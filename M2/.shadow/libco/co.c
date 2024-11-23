@@ -69,7 +69,6 @@ void co_wait(struct co *co) {
     co->waiter=current_co;
     while(current_co->status!=CO_RUNNING){
         co_yield();
-        printf("%d\n",current_co->waiting_count);
     } // 如果进程co没结束，就一直等待
     free(co->name);
     free(co);
@@ -114,6 +113,7 @@ void co_wrapper(struct co *co) {
             co->waiter->status = CO_RUNNING;
         }
     }
+    printf("%d\n",co->waiter->waiting_count);
     delete_co_to_list(co);
     co_yield();
    //不能在这里释放 后面是不会再返回这里了
