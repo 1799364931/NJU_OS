@@ -126,6 +126,7 @@ void co_wrapper(struct co *co) {
     delete_co_to_list(co);
     free(co->name);
     free(co);
+    co=NULL;
     assert(co);
     int randval=rand()%(length_co_list);
     struct co* next_co=co_list[randval];
