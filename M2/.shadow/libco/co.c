@@ -109,9 +109,7 @@ void co_wrapper(struct co *co) {
     delete_co_to_list(co);
     co_yield();
    //不能在这里释放 后面是不会再返回这里了
-   //因为co已经从列表中删除了
-
-    
+   //因为co已经从列表中删除了    
 }
 
 void co_yield() {
