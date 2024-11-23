@@ -93,7 +93,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
         "movl %0, %%esp\n\t"
         "movl %2, 4(%0)\n\t"
        // "andl $-16, %%esp\n\t"
-       // "pushl %2\n\t"  // Ensure stack is 16-byte aligned
+        "pushl %2\n\t"  // Ensure stack is 16-byte aligned
         "call *%1\n\t"
           :
           : "b"((__uint32_t)sp),
@@ -135,7 +135,7 @@ void co_yield() {
         else if(next_co->status==CO_NEW ){
             current_co=next_co;
             next_co->status=CO_RUNNING;
-            stack_switch_call((void*)(next_co->stack + STACK_SIZE),co_wrapper,next_co);
+            stack_switch_call((void*)(next_co->stack + STACK_SIZE),next_co->func,next_co->arg);
         }
         else{
             return;
