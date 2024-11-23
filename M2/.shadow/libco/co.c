@@ -64,7 +64,6 @@ void delete_co_to_list(struct co* co){
 void co_wait(struct co *co) {
     //如果当前协程调用了 wait，那就让当前协程进行等待
     current_co->status=CO_WAITING;
-    current_co->waiting_count++;
     co->waiter=current_co;
     while(co->status!=CO_DEAD){
         co_yield();
