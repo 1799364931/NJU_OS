@@ -27,7 +27,7 @@ struct co {
 };
 
 
-struct co* current_co;
+struct co* current_co=NULL;
 struct co* co_list[MAX_LENGTH];
 int length_co_list=0;
 
