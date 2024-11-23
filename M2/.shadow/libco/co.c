@@ -80,10 +80,7 @@ void co_wait(struct co *co) {
         co_yield();
     } // 如果进程co没结束，就一直等待
     
-    delete_co_to_list(co);
-    
-    free(co->name);
-    free(co);
+
    // co=NULL;
     return;
 }
@@ -124,7 +121,10 @@ void co_wrapper(struct co *co) {
         if(co->waiter->waiting_count==0){
             co->waiter->status = CO_RUNNING;
         }
-    }
+    }    
+    delete_co_to_list(co);
+    free(co->name);
+    free(co);
     co_yield();
 }
 
