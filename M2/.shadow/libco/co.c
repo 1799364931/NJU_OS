@@ -128,7 +128,7 @@ void co_wrapper(struct co *co) {
 }
 
 void co_yield() {
-    int val;
+    int val=0;
     if(current_co!=NULL){
        val =setjmp(current_co->context);
     }
