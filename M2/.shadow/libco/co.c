@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <stdio.h>
 #define MAX_LENGTH 100
-#define STACK_SIZE 1024*64
+#define STACK_SIZE 1024*32
 
 enum co_status {
     CO_NEW = 1, // 新创建，还未执行过
