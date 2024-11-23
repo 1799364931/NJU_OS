@@ -36,7 +36,7 @@ int length_co_list=0;
 
 __attribute__((constructor)) void co_init(){
     current_co=malloc(sizeof(struct co));
-    current_co->func=(void*)(0x80000000);
+    current_co->func=NULL;
     current_co->name=malloc(sizeof(char)*5);
     strncpy(current_co->name,"main",5);
     current_co->arg=NULL;
@@ -89,7 +89,7 @@ void co_wait(struct co *co) {
 static inline void
 stack_switch_call(void *sp, void *entry, void* arg) {
     asm volatile (
-#if __x86_64__
+#if __x86_64___
         "movq %0,%%rsp\n\t"
         "movq %2,%%rdi\n\t"
         "andq $-16, %%rsp\n\t"  // Ensure stack is 16-byte aligned
