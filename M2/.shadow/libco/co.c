@@ -115,6 +115,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 void co_wrapper(struct co *co) {
     co->func(co->arg);
     co->status = CO_DEAD;
+    auto co_waiter = co->waiter;
     if (co->waiter) {
         co->waiter->waiting_count--;
         if(co->waiter->waiting_count==0){
@@ -124,16 +125,12 @@ void co_wrapper(struct co *co) {
     delete_co_to_list(co);
     free(co->name);
     free(co);
-    longjmp(current_co->context,1);
+    longjmp(co_waiter->context, 1);
 }
 
 void co_yield() {
-    int val=0;
-    if(current_co!=NULL){
-       val =setjmp(current_co->context);
-    }
-    
-    if(current_co!=NULL || val==0){
+    int val =setjmp(current_co->context);
+    if(val==0){
         //保存现场的
         //随机选择一个切换
         int randval=rand()%(length_co_list);
