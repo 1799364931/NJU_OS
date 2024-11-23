@@ -79,7 +79,8 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 #if __x86_64__
         "movq %0,%%rsp\n\t"
         "movq %2,%%rdi\n\t"
-        "jmp *%1\n\t"
+        "andq $-16, %%rsp\n\t"  // Ensure stack is 16-byte aligned
+        "call *%1\n\t"
           :
           : "r"(sp),
             "r"(entry),
@@ -88,7 +89,8 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 #else
         "movl %0, %%esp\n\t"
         "movl %2, 4(%0)\n\t"
-        "jmp *%1\n\t"
+        "andl $-16, %%esp\n\t"  // Ensure stack is 16-byte aligned
+        "call *%1\n\t"
           :
           : "b"((__uint32_t)sp - 8),
             "d"(entry),
