@@ -124,7 +124,7 @@ void co_wrapper(struct co *co) {
         }
     }
     delete_co_to_list(co);
-    free(co->name);
+    //free(co->name);
     free(co);
     co=NULL;
     assert(co);
