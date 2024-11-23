@@ -36,13 +36,6 @@ int length_co_list=0;
 
 __attribute__((constructor)) void co_init(){
     current_co=co_start("main",NULL,NULL);
-    // current_co=malloc(sizeof(struct co));
-    // current_co->func=NULL;
-    // current_co->name=malloc(sizeof(char)*5);
-    // strncpy(current_co->name,"main",5);
-    // current_co->arg=NULL;
-    // current_co->status=CO_RUNNING;
-    // co_list[length_co_list++]=current_co;
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
@@ -132,13 +125,8 @@ void co_wrapper(struct co *co) {
 void co_yield() {
     int val =setjmp(current_co->context);
     if(val==0){
-        //保存现场的
-        //随机选择一个切换
         int randval=rand()%(length_co_list);
         struct co* next_co=co_list[randval];
-        
-       
-        
         if(next_co->status==CO_RUNNING || next_co->status==CO_WAITING){
              current_co=next_co;
            // printf("\n hehe \n");
@@ -154,7 +142,6 @@ void co_yield() {
         }
     }
     else{
-        //从别的地方返回的
         return;
     }
 }
