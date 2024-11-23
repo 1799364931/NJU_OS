@@ -79,7 +79,6 @@ void co_wait(struct co *co) {
     while(co->status!=CO_DEAD){
         co_yield();
     } // 如果进程co没结束，就一直等待
-    
 
    // co=NULL;
     return;
@@ -121,7 +120,7 @@ void co_wrapper(struct co *co) {
         if(co->waiter->waiting_count==0){
             co->waiter->status = CO_RUNNING;
         }
-    }    
+    }
     delete_co_to_list(co);
     free(co->name);
     free(co);
@@ -147,12 +146,7 @@ void co_yield() {
             current_co=next_co;
             next_co->status=CO_RUNNING;
             stack_switch_call((void*)(next_co->stack + STACK_SIZE),co_wrapper,next_co);
-            
         }
-       // else if(next_co->status==CO_WAITING){
-            
-       // }
-        //DEAD
         else{
             return;
         }
