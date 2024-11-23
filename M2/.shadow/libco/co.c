@@ -18,6 +18,7 @@ struct co {
     char *name;
     void (*func)(void *); // co_start 指定的入口地址和参数
     void *arg;
+    int waiting_count;//等待的数量
 
     enum co_status status;  // 协程的状态
     struct co * waiter;  // 是否有其他协程在等待当前协程
@@ -73,6 +74,7 @@ void delete_co_to_list(struct co* co){
 void co_wait(struct co *co) {
     //如果当前协程调用了 wait，那就让当前协程进行等待
     current_co->status=CO_WAITING;
+    current_co->waiting_count++;
     co->waiter=current_co;
     while(co->status!=CO_DEAD){
         co_yield();
@@ -118,7 +120,10 @@ void co_wrapper(struct co *co) {
     co->func(co->arg);
     co->status = CO_DEAD;
     if (co->waiter) {
-        co->waiter->status = CO_RUNNING;
+        co->waiter->waiting_count--;
+        if(co->waiter->waiting_count==0){
+            co->waiter->status = CO_RUNNING;
+        }
     }
     co_yield();
 }
