@@ -125,7 +125,12 @@ void co_wrapper(struct co *co) {
     delete_co_to_list(co);
     free(co->name);
     free(co);
-    longjmp(co_waiter->context, 1);
+    int randval=rand()%(length_co_list);
+    struct co* next_co=co_list[randval];
+            current_co=next_co;
+    // printf("\n hehe \n");
+    longjmp(next_co->context,1);
+    
 }
 
 void co_yield() {
