@@ -80,8 +80,9 @@ void co_wait(struct co *co) {
     while(co->status!=CO_DEAD){
         co_yield();
     } // 如果进程co没结束，就一直等待
-
-   // co=NULL;
+    free(co->name);
+    free(co);
+    //进程co结束，释放资源
     return;
 }
 
@@ -126,9 +127,8 @@ void co_wrapper(struct co *co) {
     }
     delete_co_to_list(co);
     co_yield();
-    printf ("reach!");
-    free(co->name);
-    free(co);
+   //不能在这里释放 后面是不会再返回这里了
+   //因为co已经从列表中删除了
 
     
 }
