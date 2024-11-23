@@ -67,7 +67,7 @@ void co_wait(struct co *co) {
     current_co->status=CO_WAITING;
     current_co->waiting_count++;
     co->waiter=current_co;
-    while(current_co->status!=CO_RUNNING){
+    while(co->status!=CO_DEAD){
         co_yield();
     } // 如果进程co没结束，就一直等待
     free(co->name);
@@ -107,13 +107,13 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 void co_wrapper(struct co *co) {
     co->func(co->arg);
     co->status = CO_DEAD;
-    if (co->waiter) {
-        co->waiter->waiting_count--;
-        if(co->waiter->waiting_count==0){
-            co->waiter->status = CO_RUNNING;
-        }
-    }
-    printf("\n\n\n");
+
+    // if (co->waiter) {
+    //     co->waiter->waiting_count--;
+    //     if(co->waiter->waiting_count==0){
+    //         co->waiter->status = CO_RUNNING;
+    //     }
+    // }
     delete_co_to_list(co);
     co_yield();
    //不能在这里释放 后面是不会再返回这里了
