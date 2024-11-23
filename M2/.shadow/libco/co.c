@@ -61,14 +61,16 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
 void co_wait(struct co *co) {
     //如果当前协程调用了 wait，那就让当前协程进行等待
     current_co->status=CO_WAITING;
-    co->waiter=co;
+    co->waiter=current_co;
     while(co->status!=CO_DEAD){
         co_yield();
     } // 如果进程co没结束，就一直等待
     
     length_co_list--;
+    
+    free(co->name);
     free(co);
-    co=NULL;
+   // co=NULL;
     return;
 }
 
