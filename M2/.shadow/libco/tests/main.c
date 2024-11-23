@@ -19,7 +19,7 @@ static void work_loop(void *arg) {
     
     for (int i = 0; i < 100; ++i) {
 
-       printf("%s%d  ", s, get_count());
+        printf("%s%d  ", s, get_count());
        
         add_count();
       
@@ -127,6 +127,7 @@ int main() {
     setbuf(stdout, NULL);
       
     printf("Test #1. Expect: (X|Y){0, 1, 2, ..., 199}\n");
+    printf("hehe%d",5);
     test_1();
 
     printf("\n\nTest #2. Expect: (libco-){200, 201, 202, ..., 399}\n");
