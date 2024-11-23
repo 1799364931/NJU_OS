@@ -129,7 +129,7 @@ void co_yield() {
         else if(next_co->status==CO_NEW ){
              current_co=next_co;
             next_co->status=CO_RUNNING;
-            stack_switch_call((void*)(next_co->stack + STACK_SIZE),co_wrapper,next_co->arg);
+            stack_switch_call((void*)(next_co->stack + STACK_SIZE),co_wrapper,next_co);
             
         }
        // else if(next_co->status==CO_WAITING){
