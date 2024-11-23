@@ -113,7 +113,7 @@ void co_wrapper(struct co *co) {
             co->waiter->status = CO_RUNNING;
         }
     }
-    //printf("\n%d\n",co->waiter->waiting_count);
+    printf("\n%d\n",co->waiter->waiting_count);
     delete_co_to_list(co);
     co_yield();
    //不能在这里释放 后面是不会再返回这里了
