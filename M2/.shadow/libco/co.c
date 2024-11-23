@@ -36,6 +36,7 @@ int length_co_list=0;
 
 __attribute__((constructor)) void co_init(){
     current_co=co_start("main",NULL,NULL);
+
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
@@ -82,17 +83,17 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 #if __x86_64__
         "movq %0,%%rsp\n\t"
         "movq %2,%%rdi\n\t"
-        //"andq $-16, %%rsp\n\t"  // Ensure stack is 16-byte aligned
+        "andq $-16, %%rsp\n\t"  // Ensure stack is 16-byte aligned
         "call *%1\n\t"
           :
-          : "r"(sp-8),
+          : "r"(sp),
             "r"(entry),
             "r"(arg)
           : "memory"
 #else
         "movl %0, %%esp\n\t"
         "movl %2, 4(%0)\n\t"
-       // "andl $-16, %%esp\n\t"
+        "andl $-16, %%esp\n\t"
         "pushl %2\n\t"  // Ensure stack is 16-byte aligned
         "call *%1\n\t"
           :
@@ -125,8 +126,13 @@ void co_wrapper(struct co *co) {
 void co_yield() {
     int val =setjmp(current_co->context);
     if(val==0){
+        //保存现场的
+        //随机选择一个切换
         int randval=rand()%(length_co_list);
         struct co* next_co=co_list[randval];
+        
+       
+        
         if(next_co->status==CO_RUNNING || next_co->status==CO_WAITING){
              current_co=next_co;
            // printf("\n hehe \n");
@@ -142,6 +148,7 @@ void co_yield() {
         }
     }
     else{
+        //从别的地方返回的
         return;
     }
 }
