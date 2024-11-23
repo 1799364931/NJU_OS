@@ -89,7 +89,7 @@ void co_wait(struct co *co) {
 static inline void
 stack_switch_call(void *sp, void *entry, void* arg) {
     asm volatile (
-#if __x86_64___
+#if __x86_64__
         "movq %0,%%rsp\n\t"
         "movq %2,%%rdi\n\t"
         "andq $-16, %%rsp\n\t"  // Ensure stack is 16-byte aligned
