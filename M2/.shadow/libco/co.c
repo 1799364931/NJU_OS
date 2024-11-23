@@ -69,6 +69,7 @@ void co_wait(struct co *co) {
     co->waiter=current_co;
     while(current_co->status!=CO_RUNNING){
         co_yield();
+        print("且!\n");
     } // 如果进程co没结束，就一直等待
     free(co->name);
     free(co);
