@@ -128,8 +128,12 @@ void co_wrapper(struct co *co) {
 }
 
 void co_yield() {
-    int val=setjmp(current_co->context);
-    if(val==0){
+    int val;
+    if(current_co!=NULL){
+       val =setjmp(current_co->context);
+    }
+    
+    if(current_co!=NULL || val==0){
         //保存现场的
         //随机选择一个切换
         int randval=rand()%(length_co_list);
