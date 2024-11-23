@@ -110,14 +110,15 @@ void co_yield() {
         int randval=rand()%(length_co_list);
         struct co* next_co=co_list[randval];
         
-        current_co=next_co;
+       
         
         if(next_co->status==CO_RUNNING || next_co->status==CO_WAITING){
-            
+             current_co=next_co;
            // printf("\n hehe \n");
             longjmp(next_co->context,1);
         }
         else if(next_co->status==CO_NEW ){
+             current_co=next_co;
             next_co->status=CO_RUNNING;
             stack_switch_call((void*)(next_co->stack + STACK_SIZE),next_co->func,next_co->arg);
             
