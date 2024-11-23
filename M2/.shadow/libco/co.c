@@ -115,7 +115,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 void co_wrapper(struct co *co) {
     co->func(co->arg);
     co->status = CO_DEAD;
-    auto co_waiter = co->waiter;
+    struct co* co_waiter = co->waiter;
     if (co->waiter) {
         co->waiter->waiting_count--;
         if(co->waiter->waiting_count==0){
