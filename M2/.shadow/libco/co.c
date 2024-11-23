@@ -82,7 +82,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 #if __x86_64__
         "movq %0,%%rsp\n\t"
         "movq %2,%%rdi\n\t"
-        "andq $-16, %%rsp\n\t"  // Ensure stack is 16-byte aligned
+      //  "andq $-16, %%rsp\n\t"  // Ensure stack is 16-byte aligned
         "call *%1\n\t"
           :
           : "r"(sp),
