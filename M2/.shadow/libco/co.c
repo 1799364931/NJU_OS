@@ -23,7 +23,7 @@ struct co {
     struct co * waiter;  // 是否有其他协程在等待当前协程
     jmp_buf     context; // 寄存器现场
     __uint8_t   stack[STACK_SIZE]; // 协程的堆栈
-
+    
 };
 
 
@@ -58,6 +58,18 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     return new_co;
 }
 
+void delete_co_to_list(struct co* co){
+    for(int i=0;i<length_co_list;i++){
+        if(co_list[i]==co){
+            for(int j=i;j<length_co_list-1;j++){
+                co_list[j]=co_list[j+1];
+            }
+            length_co_list--;
+            return;
+        }
+    }
+}
+
 void co_wait(struct co *co) {
     //如果当前协程调用了 wait，那就让当前协程进行等待
     current_co->status=CO_WAITING;
@@ -66,7 +78,7 @@ void co_wait(struct co *co) {
         co_yield();
     } // 如果进程co没结束，就一直等待
     
-    length_co_list--;
+    delete_co_to_list(co);
     
     free(co->name);
     free(co);
