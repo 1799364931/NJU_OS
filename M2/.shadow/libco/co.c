@@ -127,7 +127,7 @@ void co_yield() {
             longjmp(next_co->context,1);
         }
         else if(next_co->status==CO_NEW ){
-             current_co=next_co;
+            current_co=next_co;
             next_co->status=CO_RUNNING;
             stack_switch_call((void*)(next_co->stack + STACK_SIZE),co_wrapper,next_co);
             
