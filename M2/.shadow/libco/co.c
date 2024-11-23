@@ -32,10 +32,16 @@ struct co* current_co=NULL;
 struct co* co_list[MAX_LENGTH];
 int length_co_list=0;
 
+void co_cleanup() {
+    if (current_co) {
+        free(current_co->name);
+        free(current_co);
+    }
+}
 
 __attribute__((constructor)) void co_init(){
     current_co=co_start("main",NULL,NULL);
-
+    atexit(co_cleanup);
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
