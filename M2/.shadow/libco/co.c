@@ -19,7 +19,6 @@ struct co {
     char *name;
     void (*func)(void *); // co_start 指定的入口地址和参数
     void *arg;
-    int waiting_count;//等待的数量
 
     enum co_status status;  // 协程的状态
     struct co * waiter;  // 是否有其他协程在等待当前协程
@@ -70,6 +69,7 @@ void co_wait(struct co *co) {
     while(co->status!=CO_DEAD){
         co_yield();
     } // 如果进程co没结束，就一直等待
+    current_co->status=CO_RUNNING;
     free(co->name);
     free(co);
     //进程co结束，释放资源
@@ -107,13 +107,6 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 void co_wrapper(struct co *co) {
     co->func(co->arg);
     co->status = CO_DEAD;
-
-    // if (co->waiter) {
-    //     co->waiter->waiting_count--;
-    //     if(co->waiter->waiting_count==0){
-    //         co->waiter->status = CO_RUNNING;
-    //     }
-    // }
     delete_co_to_list(co);
     co_yield();
    //不能在这里释放 后面是不会再返回这里了
