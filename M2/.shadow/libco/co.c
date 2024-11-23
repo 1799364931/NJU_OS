@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <stdio.h>
 #define MAX_LENGTH 100
-#define STACK_SIZE 1024*32
+#define STACK_SIZE 1024*64
 
 enum co_status {
     CO_NEW = 1, // 新创建，还未执行过
@@ -69,8 +69,8 @@ void co_wait(struct co *co) {
         co_yield();
     } // 如果进程co没结束，就一直等待
     current_co->status=CO_RUNNING;
-    free(co->name);
-    free(co);
+    // free(co->name);
+    // free(co);
     //进程co结束，释放资源
     return;
 }
