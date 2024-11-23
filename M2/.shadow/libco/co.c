@@ -3,6 +3,7 @@
 #include <string.h>
 #include <setjmp.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <stdio.h>
 #define MAX_LENGTH 100
 #define STACK_SIZE 1024*4048
@@ -125,9 +126,11 @@ void co_wrapper(struct co *co) {
     delete_co_to_list(co);
     free(co->name);
     free(co);
+
     int randval=rand()%(length_co_list);
     struct co* next_co=co_list[randval];
-            current_co=next_co;
+    assert(next_co);
+    current_co=next_co;
     // printf("\n hehe \n");
     longjmp(next_co->context,1);
     
