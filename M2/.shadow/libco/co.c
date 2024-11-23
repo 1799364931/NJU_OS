@@ -126,6 +126,7 @@ void co_wrapper(struct co *co) {
     }
     delete_co_to_list(co);
     co_yield();
+    printf ("reach!");
     free(co->name);
     free(co);
 
