@@ -17,7 +17,7 @@ static int get_count() {
 static void work_loop(void *arg) {
     const char *s = (const char*)arg;
     
-    for (int i = 0; i < 1; ++i) {
+    for (int i = 0; i < 100; ++i) {
 
         printf("%s%d  ", s, get_count());
     
@@ -37,6 +37,8 @@ static void test_1() {
       //只要进去了 就不能使用这个抽象的怪异函数printf
     //work("X");
     struct co *thd1 = co_start("thread-1", work, "X");
+    //如果直接释放的话，在co_wait的时候会出现问题，thd1的指针会被释放
+    //导致内存访问错误
     struct co *thd2 = co_start("thread-2", work, "Y");
 
     co_wait(thd1);
