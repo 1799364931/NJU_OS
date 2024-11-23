@@ -102,6 +102,15 @@ stack_switch_call(void *sp, void *entry, void* arg) {
     );
 }
 
+void co_wrapper(struct co *co) {
+    co->func(co->arg);
+    co->status = CO_DEAD;
+    if (co->waiter) {
+        co->waiter->status = CO_RUNNING;
+    }
+    co_yield();
+}
+
 void co_yield() {
     int val=setjmp(current_co->context);
     if(val==0){
@@ -137,11 +146,3 @@ void co_yield() {
     }
 }
 
-void co_wrapper(struct co *co) {
-    co->func(co->arg);
-    co->status = CO_DEAD;
-    if (co->waiter) {
-        co->waiter->status = CO_RUNNING;
-    }
-    co_yield();
-}
