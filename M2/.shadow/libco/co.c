@@ -85,7 +85,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
         //"andq $-16, %%rsp\n\t"  // Ensure stack is 16-byte aligned
         "call *%1\n\t"
           :
-          : "r"(sp),
+          : "r"(sp-8),
             "r"(entry),
             "r"(arg)
           : "memory"
