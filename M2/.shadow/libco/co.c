@@ -92,7 +92,7 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 #else
         "movl %0, %%esp\n\t"
         "movl %2, 4(%0)\n\t"
-        "andl $-16, %%esp\n\t"
+      //  "andl $-16, %%esp\n\t"
         "pushl %2\n\t"  // Ensure stack is 16-byte aligned
         "call *%1\n\t"
           :
