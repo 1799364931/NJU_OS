@@ -14,7 +14,7 @@ enum co_status {
     CO_WAITING, // 在 co_wait 上等待
     CO_DEAD,    // 已经结束，但还未释放资源
 };
-//export LD_LIBRARY_PATH=/root/NJUOS/M2/libco
+
 struct co {
     char *name;
     void (*func)(void *); // co_start 指定的入口地址和参数
@@ -35,18 +35,10 @@ int length_co_list=0;
 
 
 __attribute__((constructor)) void co_init(){
-    current_co=malloc(sizeof(struct co));
-    current_co->func=NULL;
-    current_co->name=malloc(sizeof(char)*5);
-    strncpy(current_co->name,"main",5);
-    current_co->arg=NULL;
-    current_co->status=CO_RUNNING;
-    co_list[length_co_list++]=current_co;
-    
+    co_start("main",NULL,NULL);
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
-   
     struct co* new_co=malloc(sizeof(struct co));
     new_co->func=func;
     new_co->name=malloc(sizeof(char)*(strlen(name)+1));
@@ -54,9 +46,6 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     new_co->arg=arg;
     new_co->status=CO_NEW;
     co_list[length_co_list++]=new_co;
-    
-    //co_yield();
-     //printf("huilai!!\n");
     return new_co;
 }
 

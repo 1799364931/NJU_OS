@@ -16,20 +16,29 @@ static int get_count() {
 
 static void work_loop(void *arg) {
     const char *s = (const char*)arg;
+    
     for (int i = 0; i < 100; ++i) {
+
         printf("%s%d  ", s, get_count());
+    
         add_count();
+      
         co_yield();
+       
     }
 }
 
 static void work(void *arg) {
+   
     work_loop(arg);
 }
 
 static void test_1() {
-
+      //只要进去了 就不能使用这个抽象的怪异函数printf
+    //work("X");
     struct co *thd1 = co_start("thread-1", work, "X");
+    //如果直接释放的话，在co_wait的时候会出现问题，thd1的指针会被释放
+    //导致内存访问错误
     struct co *thd2 = co_start("thread-2", work, "Y");
 
     co_wait(thd1);
@@ -119,8 +128,9 @@ static void test_2() {
 
 int main() {
     setbuf(stdout, NULL);
-
+      
     printf("Test #1. Expect: (X|Y){0, 1, 2, ..., 199}\n");
+    //printf("hehe%d",5);
     test_1();
 
     printf("\n\nTest #2. Expect: (libco-){200, 201, 202, ..., 399}\n");
