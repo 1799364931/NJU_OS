@@ -136,3 +136,12 @@ void co_yield() {
         return;
     }
 }
+
+void co_wrapper(struct co *co) {
+    co->func(co->arg);
+    co->status = CO_DEAD;
+    if (co->waiter) {
+        co->waiter->status = CO_RUNNING;
+    }
+    co_yield();
+}
