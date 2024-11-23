@@ -19,7 +19,6 @@ struct co {
     char *name;
     void (*func)(void *); // co_start 指定的入口地址和参数
     void *arg;
-    int waiting_count;//等待的数量
 
     enum co_status status;  // 协程的状态
     struct co * waiter;  // 是否有其他协程在等待当前协程
@@ -33,20 +32,19 @@ struct co* current_co=NULL;
 struct co* co_list[MAX_LENGTH];
 int length_co_list=0;
 
+void co_cleanup() {
+    if (current_co) {
+        free(current_co->name);
+        free(current_co);
+    }
+}
 
 __attribute__((constructor)) void co_init(){
-    current_co=malloc(sizeof(struct co));
-    current_co->func=NULL;
-    current_co->name=malloc(sizeof(char)*5);
-    strncpy(current_co->name,"main",5);
-    current_co->arg=NULL;
-    current_co->status=CO_RUNNING;
-    co_list[length_co_list++]=current_co;
-    
+    current_co=co_start("main",NULL,NULL);
+    atexit(co_cleanup);
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg) {
-   
     struct co* new_co=malloc(sizeof(struct co));
     new_co->func=func;
     new_co->name=malloc(sizeof(char)*(strlen(name)+1));
@@ -54,9 +52,6 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg) {
     new_co->arg=arg;
     new_co->status=CO_NEW;
     co_list[length_co_list++]=new_co;
-    
-    //co_yield();
-     //printf("huilai!!\n");
     return new_co;
 }
 
@@ -75,11 +70,11 @@ void delete_co_to_list(struct co* co){
 void co_wait(struct co *co) {
     //如果当前协程调用了 wait，那就让当前协程进行等待
     current_co->status=CO_WAITING;
-    current_co->waiting_count++;
     co->waiter=current_co;
     while(co->status!=CO_DEAD){
         co_yield();
     } // 如果进程co没结束，就一直等待
+    current_co->status=CO_RUNNING;
     free(co->name);
     free(co);
     //进程co结束，释放资源
@@ -102,7 +97,6 @@ stack_switch_call(void *sp, void *entry, void* arg) {
           : "memory"
 #else
         "movl %0, %%esp\n\t"
-        "movl %2, 4(%0)\n\t"
         "andl $-16, %%esp\n\t"
         "pushl %2\n\t"  // Ensure stack is 16-byte aligned
         "call *%1\n\t"
@@ -118,19 +112,10 @@ stack_switch_call(void *sp, void *entry, void* arg) {
 void co_wrapper(struct co *co) {
     co->func(co->arg);
     co->status = CO_DEAD;
-    struct co* co_waiter = co->waiter;
-    if (co->waiter) {
-        co->waiter->waiting_count--;
-        if(co->waiter->waiting_count==0){
-            co->waiter->status = CO_RUNNING;
-        }
-    }
     delete_co_to_list(co);
     co_yield();
    //不能在这里释放 后面是不会再返回这里了
-   //因为co已经从列表中删除了
-
-    
+   //因为co已经从列表中删除了    
 }
 
 void co_yield() {

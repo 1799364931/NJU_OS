@@ -63,6 +63,7 @@ bool can_printf(char ch){
 
 // }
 
+
 char roles[]={'A','B','C'};
 
 void print_(int id){
