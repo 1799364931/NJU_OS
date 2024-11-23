@@ -80,8 +80,8 @@ void co_wait(struct co *co) {
     while(co->status!=CO_DEAD){
         co_yield();
     } // 如果进程co没结束，就一直等待
-    // free(co->name);
-    // free(co);
+    free(co->name);
+    free(co);
    // co=NULL;
     return;
 }
