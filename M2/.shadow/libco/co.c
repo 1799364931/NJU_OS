@@ -67,7 +67,7 @@ void co_wait(struct co *co) {
     current_co->status=CO_WAITING;
     current_co->waiting_count++;
     co->waiter=current_co;
-    while(co->status!=CO_DEAD){
+    while(current_co->status!=CO_RUNNING){
         co_yield();
     } // 如果进程co没结束，就一直等待
     free(co->name);
